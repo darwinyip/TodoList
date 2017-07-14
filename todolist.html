@@ -24,14 +24,18 @@
 				}
 
 				createList() {
-					document.getElementById("ul").innerHTML = "";
+					let ul = document.getElementById("ul");
+					ul.innerHTML = "";
 					for(let i = 0; i < this.list.length; i++) {
 						let item = document.createElement("li");
 						let text = document.createElement("input");
 						text.setAttribute("type", "text");
 						text.setAttribute("value", this.list[i]);
 						item.appendChild(text);
-						document.getElementById("ul").append(item);
+						let check = document.createElement("input");
+						check.setAttribute("type", "checkbox");
+						item.append(check);
+						ul.append(item);
 					}
 				}
 
