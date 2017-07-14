@@ -6,19 +6,49 @@
 	<body>
 		<h1 id="h1">Todo List</h1>
 		<input type="text" id="text">
-		<button type="button" onclick=appendItem()>Add to list</button>
+		<button type="button" onclick=l.run()>Add to list</button>
 		<ul id="ul">
 		</ul>
 		<script>
-			function appendItem() {
-				form = document.getElementById("text");
-				if(form.value) {
-					item = document.createElement("li");
-					item.textContent = form.value;
-					document.getElementById("ul").append(item);
+			class TodoList {
+				constructor() {
+					this.list = [];
 				}
-				form.value = "";
+
+				appendItem() {
+					let form = document.getElementById("text");
+					if(form.value) {
+						this.list.push(form.value);
+					}
+					form.value = "";
+				}
+
+				createList() {
+					document.getElementById("ul").innerHTML = "";
+					for(let i = 0; i < this.list.length; i++) {
+						let item = document.createElement("li");
+						let text = document.createElement("input");
+						text.setAttribute("type", "text");
+						text.setAttribute("value", this.list[i]);
+						item.appendChild(text);
+						document.getElementById("ul").append(item);
+					}
+				}
+
+				updateCount() {
+					if(this.list.length) {
+						document.getElementById("h1").textContent = "Todo List (" + this.list.length + ")";
+					}
+				}
+
+				run() {
+					this.appendItem();
+					this.createList();
+					this.updateCount();
+				}
 			}
+
+			let l = new TodoList();
 		</script>
 	</body>
 </html>
