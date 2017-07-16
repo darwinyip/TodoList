@@ -6,49 +6,49 @@
 	<body>
 		<h1 id="h1">Todo List</h1>
 		<input type="text" id="text">
-		<button type="button" onclick=l.run()>Add to list</button>
+		<button type="button" onclick=l.appendItem()>Add to list</button>
 		<ul id="ul">
 		</ul>
 		<script>
 			class TodoList {
 				constructor() {
 					this.list = [];
+					this.todoCount = 0;
+				}
+
+				updateCount(element) {
+					if(element.checked) {
+						this.todoCount--;
+					}
+					else {
+						this.todoCount++;
+					}
+					document.getElementById("h1").textContent = "Todo List (" + this.todoCount + ")";
+				}
+
+				createItem(text) {
+					let item = document.createElement("li");
+					let box = document.createElement("input");
+					box.setAttribute("type", "text");
+					box.setAttribute("value", text);
+					item.appendChild(box);
+					let check = document.createElement("input");
+					check.setAttribute("type", "checkbox");
+					check.onchange = this.updateCount.bind(this, check);
+					item.append(check);
+					return item;
 				}
 
 				appendItem() {
 					let form = document.getElementById("text");
 					if(form.value) {
-						this.list.push(form.value);
+						let item = this.createItem(form.value);
+						this.list.push(item);
+						document.getElementById("ul").append(item);
+						this.todoCount++;
+						document.getElementById("h1").textContent = "Todo List (" + this.todoCount + ")";
 					}
 					form.value = "";
-				}
-
-				createList() {
-					let ul = document.getElementById("ul");
-					ul.innerHTML = "";
-					for(let i = 0; i < this.list.length; i++) {
-						let item = document.createElement("li");
-						let text = document.createElement("input");
-						text.setAttribute("type", "text");
-						text.setAttribute("value", this.list[i]);
-						item.appendChild(text);
-						let check = document.createElement("input");
-						check.setAttribute("type", "checkbox");
-						item.append(check);
-						ul.append(item);
-					}
-				}
-
-				updateCount() {
-					if(this.list.length) {
-						document.getElementById("h1").textContent = "Todo List (" + this.list.length + ")";
-					}
-				}
-
-				run() {
-					this.appendItem();
-					this.createList();
-					this.updateCount();
 				}
 			}
 
