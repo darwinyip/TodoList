@@ -7,13 +7,19 @@
 		<h1 id="h1">Todo List</h1>
 		<input type="text" id="text">
 		<button type="button" onclick=l.appendItem()>Add to list</button>
+		<button type="button" onclick="">Save</button>
 		<ul id="ul">
 		</ul>
 		<script>
 			class TodoList {
+
 				constructor() {
 					this.list = [];
 					this.todoCount = 0;
+				}
+
+				getList() {
+					return this.list;
 				}
 
 				updateCount(element) {
@@ -26,16 +32,34 @@
 					document.getElementById("h1").textContent = "Todo List (" + this.todoCount + ")";
 				}
 
+				deleteItem(item) {
+					console.log(item);
+					if(!item.childNodes[1].checked) {
+						this.todoCount--;
+						document.getElementById("h1").textContent = "Todo List (" + this.todoCount + ")";
+					}
+					item.parentNode.removeChild(item);
+				}
+
 				createItem(text) {
 					let item = document.createElement("li");
-					let box = document.createElement("input");
-					box.setAttribute("type", "text");
-					box.setAttribute("value", text);
-					item.appendChild(box);
+					let textbox = document.createElement("input");
 					let check = document.createElement("input");
+					let deletebutton = document.createElement("button");
+
+					textbox.setAttribute("type", "text");
+					textbox.setAttribute("value", text);
+
 					check.setAttribute("type", "checkbox");
 					check.onchange = this.updateCount.bind(this, check);
-					item.append(check);
+
+					deletebutton.innerHTML = "X";
+					deletebutton.onclick = this.deleteItem.bind(this, item);
+
+					item.appendChild(textbox);
+					item.appendChild(check);
+					item.appendChild(deletebutton);
+					
 					return item;
 				}
 
